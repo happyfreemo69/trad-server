@@ -64,6 +64,17 @@ namespace :deploy do
     end
   end
 
+  desc 'notify subscribers to reload'
+  task :notify do
+    fetch(:subscribers).split(' ').each do |subscriberUrl|
+      system "curl -X POST -o /dev/null --max-time 10 --silent --head --write-out '%{http_code}' "+subscriberUrl+" | grep -q 200"
+      if($?.exitstatus != 0) then
+        puts 'ping failed: ' + $?.exitstatus.to_s
+        exit
+      end
+    end
+  end
+
   desc 'get deployed tag'
   task :version do
     on roles(:app), in: :sequence, wait: 5 do
@@ -74,5 +85,6 @@ namespace :deploy do
     end
   end
   after :restart, 'deploy:ping'
+  after :ping, 'deploy:notify'
   after :started, 'deploy:select_tag'
 end
