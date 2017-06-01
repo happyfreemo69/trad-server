@@ -1,0 +1,17 @@
+{
+    "name": "trad-server",
+    "version": "1.0.0",
+    "description": "just store a file...will maybe provide an api later",
+    "author": "mpech",
+    "dependencies": {
+        "optimist":"0.6.1"
+    },
+    "devDependencies":{
+        "trad-cli":"1.0.0"
+    },
+    "scripts":{
+        "preinstall":"./config/deploy/fetchunpublished.js happyfreemo69/trad-cli"
+    },
+    "private":true,
+    "license": "MIT"
+}
